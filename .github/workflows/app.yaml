@@ -10,7 +10,7 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      # Step 1: Check out the repositoryy
+      # Step 1: Check out the repository
       - name: Check out the repository
         uses: actions/checkout@v3
 
@@ -35,7 +35,7 @@ jobs:
           # Build the Docker image
           sudo docker build -t $IMAGE_TAG ./APP
 
-      # Step 4: Push the Docker image to ECR
+      # Step 4: Push Docker Image to ECR
       - name: Push Docker Image to ECR
         run: |
           # Output IMAGE_TAG to ensure it's set
