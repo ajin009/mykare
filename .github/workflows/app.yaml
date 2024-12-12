@@ -29,17 +29,14 @@ jobs:
           AWS_REGION="us-east-2"  # Change to your region
           IMAGE_TAG="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:latest"
           
-          # Output the IMAGE_TAG to confirm it's being set correctly
-          echo "Image tag: $IMAGE_TAG"
-          
           # Build the Docker image
-          sudo docker build -t $IMAGE_TAG ./APP
+          sudo docker build -t mykare-repo:latest ./APP
+          
+          # Tag the image with the full ECR repository URI
+          sudo docker tag mykare-repo:latest ${IMAGE_TAG}
 
-      # Step 4: Push Docker Image to ECR
+      # Step 4: Push the Docker image to ECR
       - name: Push Docker Image to ECR
         run: |
-          # Output IMAGE_TAG to ensure it's set
-          echo "Pushing image to ECR: $IMAGE_TAG"
-          
           # Push the Docker image to ECR
-          sudo docker push $IMAGE_TAG
+          sudo docker push ${IMAGE_TAG}
