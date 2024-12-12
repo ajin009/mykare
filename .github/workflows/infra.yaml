@@ -3,10 +3,10 @@ name: Terraform AWS Infrastructure
 on:
   push:
     branches:
-      - main
+      - mainn
   pull_request:
     branches:
-      - main
+      - mainn
 
 jobs:
   terraform:
