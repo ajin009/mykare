@@ -7,36 +7,34 @@ on:
 
 jobs:
   build-and-push:
-    runs-on: self-hosted
+    runs-on: self-hosted  # Use a self-hosted runner
 
     steps:
       # Step 1: Check out the repository
       - name: Check out the repository
         uses: actions/checkout@v3
 
-      # Step 2: Log in to Amazon ECR
+      # Step 2: Set up Docker
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Step 3: Log in to Amazon ECR
       - name: Log in to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
         with:
-          region: us-east-2
-      
-      # Step 3: Build and tag the Docker image
-      - name: Build and Tag Docker Image
-        run: |
-          # Define the ECR repository URI and the tag
-          ECR_REPOSITORY="mykare-repo"
-          AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
-          AWS_REGION="us-east-2"  # Change to your region
-          IMAGE_TAG="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:latest"
-          
-          # Build the Docker image
-          sudo docker build -t mykare-repo:latest ./APP
-          
-          # Tag the image with the full ECR repository URI
-          sudo docker tag mykare-repo:latest ${IMAGE_TAG}
+          region: us-east-2  # Specify your AWS region
 
-      # Step 4: Push the Docker image to ECR
-      - name: Push Docker Image to ECR
+      # Step 4: Build the Docker image
+      - name: Build Docker image
         run: |
-          # Push the Docker image to ECR
-          sudo docker push ${IMAGE_TAG}
+          docker build -t mykare-repo ./APP  # Replace './APP' with your build context if different
+
+      # Step 5: Tag the Docker image
+      - name: Tag Docker image
+        run: |
+          docker tag mykare-repo:latest 992382438308.dkr.ecr.us-east-2.amazonaws.com/mykare-repo:latest
+
+      # Step 6: Push Docker image to Amazon ECR
+      - name: Push Docker image to ECR
+        run: |
+          docker push 992382438308.dkr.ecr.us-east-2.amazonaws.com/mykare-repo:latest
