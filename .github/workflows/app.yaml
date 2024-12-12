@@ -1,1 +1,38 @@
+name: Build and Push to ECR
 
+on:
+  push:
+    branches:
+      - main  # Trigger this workflow when pushing to the main branch
+
+jobs:
+  build-and-push:
+    runs-on: self-hosted
+
+    steps:
+      # Step 1: Check out the repository
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      # Step 2: Log in to Amazon ECR
+      - name: Log in to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
+
+      # Step 3: Build and tag the Docker image
+      - name: Build and Tag Docker Image
+        run: |
+          # Define the ECR repository URI and the tag
+          ECR_REPOSITORY="mykare-repo"
+          AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
+          AWS_REGION="us-east-2"  # Change to your region
+          IMAGE_TAG="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:latest"
+
+          # Build the Docker image
+          docker build -t $IMAGE_TAG ./APP
+
+      # Step 4: Push the Docker image to ECR
+      - name: Push Docker Image to ECR
+        run: |
+          docker push $IMAGE_TAG
+
+      
