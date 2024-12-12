@@ -19,6 +19,8 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
         with:
           region: us-east-2
+      - name : docker
+        run: sudo usermod -aG docker username
 
       # Step 3: Build and tag the Docker image
       - name: Build and Tag Docker Image
