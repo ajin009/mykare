@@ -1,4 +1,4 @@
-key_pair = "key-vishnu"
+key_pair = "key-mykare"
 instance_type = "t2.medium"
 public_access_cidrs = ["0.0.0.0/0"]
 tags = "prod-vpc-tag1"
@@ -12,6 +12,6 @@ private_cidrs = ["192.168.3.0/24", "192.168.4.0/24"]
 rt_route_cidr_block = "0.0.0.0/0"
 access_ip              = "0.0.0.0/0"
 map_public_ip_on_launch = "true"
-key_name = "key-ajin"
-ami_id = "ami-0c80e2b6ccb9ad6d1"
+key_name = "key-mykare"
+ami_id = "ami-036841078a4b68e14"
 
