@@ -3,10 +3,10 @@ name: Terraform AWS Infrastructure
 on:
   push:
     branches:
-      - mainn
+      - main
   pull_request:
     branches:
-      - mainn
+      - main
 
 jobs:
   terraform:
@@ -38,4 +38,7 @@ jobs:
 
     - name: Terraform Apply
       run: terraform apply -auto-approve tfplan
+
+    - name: Terraform destroy
+      run: terraform destroy
      
