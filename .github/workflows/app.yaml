@@ -19,9 +19,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
         with:
           region: us-east-2
-      - name : docker
-        run: sudo usermod -aG docker username
-
+      
       # Step 3: Build and tag the Docker image
       - name: Build and Tag Docker Image
         run: |
@@ -32,11 +30,11 @@ jobs:
           IMAGE_TAG="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:latest"
 
           # Build the Docker image
-          docker build -t $IMAGE_TAG ./APP
+          sudo docker build -t $IMAGE_TAG ./APP
 
       # Step 4: Push the Docker image to ECR
       - name: Push Docker Image to ECR
         run: |
-          docker push $IMAGE_TAG
+          sudo docker push $IMAGE_TAG
 
       
